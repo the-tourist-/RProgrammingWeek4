@@ -1,0 +1,17 @@
+{
+    "contents" : "best <- function(state, outcome) { \n  ## Read outcome data\n  outcomeData <- read.csv(\"outcome-of-care-measures.csv\", colClasses = \"character\")\n  outcomeData[, 11] <- as.numeric(outcomeData[, 11])\n\n  ## Check that state and outcome are valid\n  states <- unique(outcomeData$State)\n  templateString <- \"Hospital.30.Day.Death..Mortality..Rates.from.\"\n  outcomes <- sub(templateString, \"\", names(outcomeData)[grep(templateString, names(outcomeData), fixed=T)], fixed=T)\n  outcomesFriendly <- tolower(sub(\".\", \" \", outcomes, fixed=T))\n\n  state <- toupper(state)\n  \n  if (sum(outcomesFriendly==tolower(outcome))==0) {\n    stop(\"Invalid Outcome\")\n  } else {\n    outcomeColumn <- paste(templateString, outcomes[which(outcomesFriendly==tolower(outcome))], sep=\"\")\n  }\n  \n  if (sum(states==state)==0)\n    stop(\"Invalid State\")\n  \n  ## Return hospital name in that state with lowest 30-day death ## rate\n  filteredOutcomes <- outcomeData[outcomeData$State==state, outcomeColumn]\n  sort(outcomeData$Hospital.Name[which(outcomeData[outcomeColumn]==filteredOutcomes[order(as.numeric(filteredOutcomes))][1])])[1]\n}\n\n## Used for testing, will print the passed arguments and the resultant output from the \"best\" function\nprintAndTestBest <- function(state, outcome) {\n  print(state)\n  print(outcome)\n  print(best(state, outcome))\n}\n\n## Test\nprintAndTestBest(\"TX\", \"heart attack\")\nprintAndTestBest(\"TX\", \"heart failure\")\nprintAndTestBest(\"MD\", \"heart attack\")\nprintAndTestBest(\"MD\", \"pneumonia\")\nprintAndTestBest(\"BB\", \"heart attack\")\nprintAndTestBest(\"NY\", \"hert attack\")",
+    "created" : 1401555223821.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3937438692",
+    "id" : "3D049089",
+    "lastKnownWriteTime" : 1401562651,
+    "path" : "~/GitHub/RProgrammingWeek4/RProgrammingWeek4.R",
+    "project_path" : "RProgrammingWeek4.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : true,
+    "type" : "r_source"
+}
