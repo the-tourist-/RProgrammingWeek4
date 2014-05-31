@@ -21,8 +21,9 @@ best <- function(state, outcome) {
     stop("Invalid State")
   
   ## Return hospital name in that state with lowest 30-day death ## rate
-  filteredOutcomes <- outcomeData[outcomeData$State==state, outcomeColumn]
-  sort(outcomeData$Hospital.Name[which(outcomeData[outcomeColumn]==filteredOutcomes[order(as.numeric(filteredOutcomes))][1])])[1]
+  filteredOutcomes <- outcomeData[outcomeData$State==state,]
+  lowestDeathRate <- filteredOutcomes[order(as.numeric(filteredOutcomes[, outcomeColumn])), outcomeColumn][1]
+  sort(filteredOutcomes$Hospital.Name[which(filteredOutcomes[outcomeColumn]==lowestDeathRate)])[1]
 }
 
 ## Used for testing, will print the passed arguments and the resultant output from the "best" function
